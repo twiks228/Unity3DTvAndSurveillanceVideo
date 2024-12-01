@@ -14,37 +14,37 @@ public class TV_Trigger : MonoBehaviour
     [Header("Sound Settings")]
     [Range(0f, 1f)] public float soundVolume = 1f;
 
-    private bool isPlayerInTrigger = false; // Р”РѕР±Р°РІР»РµРЅР° СЌС‚Р° СЃС‚СЂРѕРєР°
+    private bool isPlayerInTrigger = false; // Добавлена эта строка
     private bool isCurrentlyOn = false;
 
     private void Start()
     {
-        // РђРІС‚РѕРјР°С‚РёС‡РµСЃРєРёР№ РїРѕРёСЃРє, РµСЃР»Рё РЅРµ РЅР°Р·РЅР°С‡РµРЅ
+        // Автоматический поиск, если не назначен
         if (tvVideoControl == null)
         {
             tvVideoControl = GetComponentInParent<TV_VideoControl>();
         }
 
-        // РђРІС‚РѕРјР°С‚РёС‡РµСЃРєРёР№ РїРѕРёСЃРє AudioSource, РµСЃР»Рё РЅРµ РЅР°Р·РЅР°С‡РµРЅ
+        // Автоматический поиск AudioSource, если не назначен
         if (audioSource == null)
         {
             audioSource = GetComponent<AudioSource>();
         }
 
-        // РЎРѕР·РґР°РЅРёРµ AudioSource, РµСЃР»Рё РµРіРѕ РЅРµС‚
+        // Создание AudioSource, если его нет
         if (audioSource == null)
         {
             audioSource = gameObject.AddComponent<AudioSource>();
             audioSource.playOnAwake = false;
         }
 
-        // РќР°СЃС‚СЂРѕР№РєР° РіСЂРѕРјРєРѕСЃС‚Рё
+        // Настройка громкости
         if (audioSource != null)
         {
             audioSource.volume = soundVolume;
         }
 
-        // РџСЂРѕРІРµСЂРєР° РЅР°Р»РёС‡РёСЏ РєРѕРјРїРѕРЅРµРЅС‚Р°
+        // Проверка наличия компонента
         if (tvVideoControl == null)
         {
             Debug.LogError("No TV_VideoControl found on parent objects!");
@@ -53,10 +53,10 @@ public class TV_Trigger : MonoBehaviour
 
     private void Update()
     {
-        // РџСЂРѕРІРµСЂРєР° С‚СЂРёРіРіРµСЂР° Рё РІР·Р°РёРјРѕРґРµР№СЃС‚РІРёСЏ
+        // Проверка триггера и взаимодействия
         if (isPlayerInTrigger && tvVideoControl != null)
         {
-            // РћР±СЂР°Р±РѕС‚РєР° РЅР°Р¶Р°С‚РёСЏ РєР»Р°РІРёС€Рё
+            // Обработка нажатия клавиши
             if (Input.GetKeyDown(interactionKey))
             {
                 ToggleTVWithSound();
@@ -66,13 +66,13 @@ public class TV_Trigger : MonoBehaviour
 
     private void ToggleTVWithSound()
     {
-        // РџРµСЂРµРєР»СЋС‡Р°РµРј С‚РµР»РµРІРёР·РѕСЂ
+        // Переключаем телевизор
         tvVideoControl.ToggleTV();
 
-        // Р’РѕСЃРїСЂРѕРёР·РІРѕРґРёРј Р·РІСѓРє
+        // Воспроизводим звук
         if (audioSource != null)
         {
-            // Р’С‹Р±РёСЂР°РµРј Р·РІСѓРє РІ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё РѕС‚ С‚РµРєСѓС‰РµРіРѕ СЃРѕСЃС‚РѕСЏРЅРёСЏ
+            // Выбираем звук в зависимости от текущего состояния
             AudioClip soundToPlay = isCurrentlyOn ? tvTurnOffSound : tvTurnOnSound;
 
             if (soundToPlay != null)
@@ -81,19 +81,19 @@ public class TV_Trigger : MonoBehaviour
                 audioSource.Play();
             }
 
-            // РРЅРІРµСЂС‚РёСЂСѓРµРј СЃРѕСЃС‚РѕСЏРЅРёРµ
+            // Инвертируем состояние
             isCurrentlyOn = !isCurrentlyOn;
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        // РџСЂРѕРІРµСЂРєР° РІС…РѕРґР° РёРіСЂРѕРєР° РІ С‚СЂРёРіРіРµСЂ
+        // Проверка входа игрока в триггер
         if (other.CompareTag("Player"))
         {
             isPlayerInTrigger = true;
 
-            // РџРѕРєР°Р·Р°С‚СЊ С‚РµРєСЃС‚ РІР·Р°РёРјРѕРґРµР№СЃС‚РІРёСЏ РўРћР›Р¬РљРћ РІ С‚СЂРёРіРіРµСЂРµ
+            // Показать текст взаимодействия ТОЛЬКО в триггере
             if (tvVideoControl != null && tvVideoControl.interactionText != null)
             {
                 tvVideoControl.interactionText.gameObject.SetActive(true);
@@ -106,12 +106,12 @@ public class TV_Trigger : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        // Р’С‹С…РѕРґ РёРіСЂРѕРєР° РёР· С‚СЂРёРіРіРµСЂР°
+        // Выход игрока из триггера
         if (other.CompareTag("Player"))
         {
             isPlayerInTrigger = false;
 
-            // РџРѕР»РЅРѕРµ СЃРєСЂС‹С‚РёРµ С‚РµРєСЃС‚Р° РїСЂРё РІС‹С…РѕРґРµ РёР· С‚СЂРёРіРіРµСЂР°
+            // Полное скрытие текста при выходе из триггера
             if (tvVideoControl != null && tvVideoControl.interactionText != null)
             {
                 tvVideoControl.interactionText.gameObject.SetActive(false);
