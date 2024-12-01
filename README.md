@@ -51,4 +51,4 @@ A comprehensive Unity project featuring an immersive television interaction syst
 
   #### Other
 - The shader settings are located in the Screen [name] object
-
+- Each TV set should have its own Render Texture material, and each Video player (you can not configure it, only insert the script is configured automatically)
