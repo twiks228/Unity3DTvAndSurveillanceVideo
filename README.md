@@ -3,7 +3,8 @@
 ## Overview
 A comprehensive Unity project featuring an immersive television interaction system with advanced camera controls, dynamic visual effects, and realistic retro TV simulation.
 
-![Project Banner](path/to/banner-image.png)
+![Project Banner](https://github.com/user-attachments/assets/0a1a0e2e-0f3d-4b26-a0a2-c50aab62bd4a)
+
 
 ## 🎮 Features
 
